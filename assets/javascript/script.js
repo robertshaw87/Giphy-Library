@@ -1,5 +1,6 @@
 var tagLibrary = ["cat", "kitten", "puppy"];
 var apiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
+var numImages = 12;
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
 function displayButtons() {
@@ -17,19 +18,26 @@ function displayButtons() {
 function makeImage(obj) {
     console.log(obj);
     var tempImage = $("<img>");
+    tempImage.addClass("card-img-top"); 
     tempImage.attr("src", obj.images.fixed_width_still.url);
     tempImage.attr("alt", obj.title)
     tempImage.data("animated", false)
     tempImage.data("still-url", obj.images.fixed_width_still.url);
     tempImage.data("animated-url", obj.images.fixed_width.url)
     var tempCard = $("<div>");
-    tempCard.addClass("card col-3 p-0 m-3");
+    tempCard.addClass("card bg-dark col-md-3 col-sm-6 col-12 p-0 mt-2 mb-2");
     tempCard.append(tempImage);
-    var tempImageOverlay = $("<div>");
-    tempImageOverlay.addClass("card-img-overlay card-title text-center text-light");
+    var tempImageOverlay = $("<h6>");
+    tempImageOverlay.addClass("card-img-overlay bg-none card-title text-center text-light centered-bottom p-0");
+    tempImageOverlay.attr("style", "height: 100%; opacity: .0")
     tempImageOverlay.text(obj.title);
     tempCard.append(tempImageOverlay);
-    $("#pictures-area").append(tempCard);
+    var tempCardText = $("<h5>");
+    tempCardText.addClass("text-center text-light");
+    tempCardText.text(obj.rating);
+    tempCard.append(tempCardText);
+    tempCard.attr("style", "height: 100%")
+    return tempCard;
 }
 
 // add the category we input when we click the add button
@@ -49,7 +57,7 @@ $(document).on("click", "#add-button", function(event) {
 // get the images we want with an ajax call to the giphy API when we click the button
 $(document).on("click", ".search-tag", function(event){
     // set the query url for our ajax call, we dont want more than 10 results
-    var userQuery = "https://api.giphy.com/v1/gifs/search?api_key="+apiKey+"&q="+$(this).data("name")+"&limit=10";
+    var userQuery = "https://api.giphy.com/v1/gifs/search?api_key="+apiKey+"&q="+$(this).data("name")+"&limit="+numImages;
     console.log(userQuery);
     $.ajax({
         url: userQuery,
@@ -58,7 +66,10 @@ $(document).on("click", ".search-tag", function(event){
         $("#pictures-area").empty();
         var result = response.data;
         for (var i=0; i<result.length; i++) {
-            makeImage(result[i]);
+            $("#pictures-area").append($("<div>").addClass("clearfix"))
+            $("#pictures-area").append(makeImage(result[i]));
+            $("#pictures-area").append($("<div>").addClass("col col-md-1 m-0 p-0"));
+
         }
       })
 })
