@@ -1,0 +1,27 @@
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* cheter the text in the middle of the top or bottom of the parent object */
+.centered-top, .centered-bottom{
+    position: absolute;
+    width: 100%;
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.centered-top{
+    top:0px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.centered-bottom{
+    bottom: 0px;
+    left: 50%;
+    font-weight: bold;
+    transform: translate(-50%, 0%);
+}

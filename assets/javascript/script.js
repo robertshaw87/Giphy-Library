@@ -6,7 +6,7 @@ function displayButtons() {
     $("#buttons-area").empty();
     for (var i=0; i<tagLibrary.length; i++) {
         var newButton = $("<button>");
-        newButton.addClass("btn btn-outline-secondary search-tag");
+        newButton.addClass("btn btn-outline-secondary text-light search-tag");
         newButton.attr("type", "button");
         newButton.text(tagLibrary[i]);
         newButton.data("name", tagLibrary[i]);
@@ -17,6 +17,19 @@ function displayButtons() {
 function makeImage(obj) {
     console.log(obj);
     var tempImage = $("<img>");
+    tempImage.attr("src", obj.images.fixed_width_still.url);
+    tempImage.attr("alt", obj.title)
+    tempImage.data("animated", false)
+    tempImage.data("still-url", obj.images.fixed_width_still.url);
+    tempImage.data("animated-url", obj.images.fixed_width.url)
+    var tempCard = $("<div>");
+    tempCard.addClass("card col-3 p-0 m-3");
+    tempCard.append(tempImage);
+    var tempImageOverlay = $("<div>");
+    tempImageOverlay.addClass("card-img-overlay card-title text-center text-light");
+    tempImageOverlay.text(obj.title);
+    tempCard.append(tempImageOverlay);
+    $("#pictures-area").append(tempCard);
 }
 
 // add the category we input when we click the add button
@@ -42,6 +55,7 @@ $(document).on("click", ".search-tag", function(event){
         url: userQuery,
         method: "GET"
     }).then(function(response) {
+        $("#pictures-area").empty();
         var result = response.data;
         for (var i=0; i<result.length; i++) {
             makeImage(result[i]);
