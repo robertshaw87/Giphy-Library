@@ -25,15 +25,18 @@ function makeImage(obj) {
     tempImage.data("still-url", obj.images.fixed_width_still.url);
     tempImage.data("animated-url", obj.images.fixed_width.url)
     var tempCard = $("<div>");
-    tempCard.addClass("card bg-dark col-md-3 col-sm-6 col-12 p-0 mt-2 mb-2");
+    tempCard.addClass("card bg-dark col-md-3 col-sm-6 col-12 p-0 mt-2 mb-2 text-light");
     tempCard.append(tempImage);
-    var tempImageOverlay = $("<h6>");
-    tempImageOverlay.addClass("card-img-overlay bg-none card-title text-center text-light centered-bottom p-0");
-    tempImageOverlay.attr("style", "height: 100%; opacity: .0")
-    tempImageOverlay.text(obj.title);
+    var tempImageOverlay = $("<div>");
+    tempImageOverlay.addClass("card-img-overlay text-center p-0");
+    tempImageOverlay.attr("style", "height: 100%; background-color: rgba(0,0,0,0);");
+    var tempCardText = $("<h5>");
+    tempCardText.attr("style", "background-color: rgba(0,0,0,.7);");
+    tempCardText.text(obj.title);
+    tempImageOverlay.append(tempCardText);
     tempCard.append(tempImageOverlay);
     var tempCardText = $("<h5>");
-    tempCardText.addClass("text-center text-light");
+    tempCardText.addClass("text-center");
     tempCardText.text(obj.rating);
     tempCard.append(tempCardText);
     tempCard.attr("style", "height: 100%")
