@@ -14,6 +14,11 @@ function displayButtons() {
     }
 }
 
+function makeImage(obj) {
+    console.log(obj);
+    var tempImage = $("<img>");
+}
+
 // add the category we input when we click the add button
 $(document).on("click", "#add-button", function(event) {
     event.preventDefault();
@@ -38,6 +43,9 @@ $(document).on("click", ".search-tag", function(event){
         method: "GET"
     }).then(function(response) {
         var result = response.data;
+        for (var i=0; i<result.length; i++) {
+            makeImage(result[i]);
+        }
       })
 })
 
