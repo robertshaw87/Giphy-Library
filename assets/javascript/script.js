@@ -1,5 +1,5 @@
 var tagLibrary = ["cat", "kitten", "puppy"];
-var ApiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
+var apiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
 function displayButtons() {
@@ -29,8 +29,16 @@ $(document).on("click", "#add-button", function(event) {
   });
 
 // get the images we want with an ajax call to the giphy API when we click the button
-$(document).on("click", "search-tag", function(event){
-
+$(document).on("click", ".search-tag", function(event){
+    // set the query url for our ajax call, we dont want more than 10 results
+    var userQuery = "https://api.giphy.com/v1/gifs/search?api_key="+apiKey+"&q="+$(this).data("name")+"&limit=10";
+    console.log(userQuery);
+    $.ajax({
+        url: userQuery,
+        method: "GET"
+    }).then(function(response) {
+        var result = response.data;
+      })
 })
 
 $(document).ready(function() {
