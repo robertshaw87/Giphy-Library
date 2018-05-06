@@ -1,6 +1,14 @@
 nav {
     background-color: rgba(9,18,16,1);
 }
+.btn {
+    border-style: outset;
+    border-width: 5px;
+}
+
+.btn:hover {
+    border-style: inset;
+}
 
 .nav-tabs {
     position: relative;

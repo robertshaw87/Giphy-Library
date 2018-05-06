@@ -1,4 +1,4 @@
-var tagLibrary = ["cat", "kitten", "dog", "puppy", "bulldog", "corgi"];
+var tagLibrary = ["cat", "kitten", "dog", "puppy", "bulldog", "squirrel", "penguin", "corgi"];
 var apiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
 var numImages = 12;
 var favoriteImages = {};
@@ -9,7 +9,7 @@ function displayButtons() {
     $("#buttons-area").empty();
     for (var i=0; i<tagLibrary.length; i++) {
         var newButton = $("<button>");
-        newButton.addClass("btn btn-outline-secondary text-light search-tag mr-3 mb-3 ");
+        newButton.addClass("btn btn-primary text-light search-tag mr-3 mb-3 ");
         newButton.attr("type", "button");
         newButton.text(tagLibrary[i]);
         newButton.data("name", tagLibrary[i]);
