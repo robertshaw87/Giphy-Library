@@ -2,6 +2,7 @@ var tagLibrary = ["cat", "kitten", "dog", "puppy", "bulldog", "corgi"];
 var apiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
 var numImages = 12;
 var favoriteImages = {};
+var homePictures;
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
 function displayButtons() {
@@ -61,6 +62,18 @@ function makeImage(obj) {
     return tempCard;
 }
 
+$(document).on("click", ".navHome", function(event){
+    $(".navHome").addClass("active");
+    $(".navFav").removeClass("active");
+    displayButtons();
+});
+
+$(document).on("click", ".navFav", function(event){
+    $(".navFav").addClass("active");
+    $(".navHome").removeClass("active");
+    displayButtons();
+});
+
 $(document).on("click", ".favBtn", function(event){
     var ImageObj = $(this).data("favObject");
     if (favoriteImages[ImageObj.id]){
@@ -104,9 +117,10 @@ $(document).on("click", ".search-tag", function(event){
         method: "GET"
     }).then(function(response) {
         $("#pictures-area").empty();
+        homePictures = [];
         var result = response.data;
         for (var i=0; i<result.length; i++) {
-            // $("#pictures-area").append($("<div>").addClass("clearfix"))
+            homePictures.push(result[i])
             $("#pictures-area").append($("<div>").addClass("col col-md-1 col-lg-1 m-0 p-0"));
             $("#pictures-area").append(makeImage(result[i]));
 
