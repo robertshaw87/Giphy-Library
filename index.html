@@ -27,6 +27,7 @@
                 <img src="assets/images/giphy.png" height="100" class="d-inline-block align-top float-left" alt="">
                 <h1 class="float-left pl-3" id="brand">Pet Library</h1>
             </a>
+            <!-- nav-bar tabs -->
             <ul class="nav navbar-dark nav-tabs float-right m-0 p-0 ml-5">
                 <li class="nav-item">
                     <a class="nav-link navHome active" href="#">Home</a>
@@ -43,17 +44,21 @@
             <div class="col-lg-3 col-md-4 col-12" id="search-area">
                 <div class="row p-2">
                     <div class="input-group mb-3" onsubmit="return false;">
+                        <!-- user input area for more categories -->
                         <input type="text" class="form-control" placeholder="Track another category" onfocus="this.placeholder=''" onblur="this.placeholder='Track another category'" id="user-input">
                         <div class="input-group-append">
+                            <!-- button to add the user input to the categories library -->
                             <button class="btn btn-outline-secondary" type="button" id="add-button">Add</button>
                         </div>
                     </div>
                 </div>
+                <!-- area for utility buttons like "clear favorites" or "more images" -->
                 <div class="row p-2" id="utility-area"></div>
+                <!-- area for the category buttons (default and user made) -->
                 <div class="row p-2 mt-3" id="buttons-area"></div>
             </div>
-            <!-- <div class="col"></div> -->
-            <div class="col-lg-9 col-md-8 col-12">
+            <div class="col-lg-9 col-md-8 col-12" id="pictures-wrapper">
+                <!-- area to show all the images the user searched for -->
                 <div class="row p-2" id="pictures-area"></div>
             </div>
         </div>

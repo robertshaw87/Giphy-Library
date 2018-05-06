@@ -1,28 +1,36 @@
+/* background image for the entire document */
 body {
     background-image: url("../images/background.png");
     background-color: #ccc;
 }
 
+/* color of the nav bar */
 nav {
     background-color: rgba(9,18,16,1);
 }
+
+/* makes all the buttons pop out */
 .btn {
     border-style: outset;
     border-width: 5px;
 }
 
+/* depresses buttons on hover */
 .btn:hover {
     border-style: inset;
 }
 
+/* this affects the home and favorites tabs */
 .nav-tabs {
     position: relative;
 }
 
+/* defaults the image overlay of the image cards to be invisible */
 .infoCard {
     visibility: hidden;
 }
 
+/* show the overlay upon hover */
 .imgCard:hover .infoCard {
     visibility: initial;
 }
