@@ -1,6 +1,7 @@
 var tagLibrary = ["cat", "kitten", "puppy"];
 var apiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
 var numImages = 12;
+var favoriteImages = {dTJd5ygpxkzWo: "as"};
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
 function displayButtons() {
@@ -16,30 +17,47 @@ function displayButtons() {
 }
 
 function makeImage(obj) {
+    console.log(obj)
     var tempImage = $("<img>");
-    tempImage.addClass("card-img-top imgCard-img"); 
+    tempImage.addClass("card-img imgCard-img"); 
     tempImage.attr("src", obj.images.fixed_width_still.url);
-    tempImage.attr("alt", obj.title)
-    tempImage.data("animated", false)
-    tempImage.data("still-url", obj.images.fixed_width_still.url);
-    tempImage.data("animated-url", obj.images.fixed_width.url)
+    tempImage.attr("alt", obj.title);
+    tempImage.attr("data-animated", false);
+    tempImage.attr("data-still-url", obj.images.fixed_width_still.url);
+    tempImage.attr("data-animated-url", obj.images.fixed_width.url)
+
+    var tempImageOverlay = $("<div>");
+    tempImageOverlay.addClass("card-img-overlay text-center p-0 infoCard");
+    tempImageOverlay.attr("style", "height: 100%; background-color: rgba(0,0,0,0.7);");
+    
+    var tempImageTitle = $("<h6>");
+    tempImageTitle.addClass("card-title");
+    tempImageTitle.text(obj.title);
+    tempImageOverlay.append(tempImageTitle);
+
+    var tempImageRating = $("<p>");
+    tempImageRating.addClass("card-text");
+    tempImageRating.text("Rating: " + obj.rating.toUpperCase());
+    tempImageOverlay.append(tempImageRating);
+
+    var tempFavoriteButton = $("<button>");
+    tempFavoriteButton.attr("style", "bottom: 0; right: 0 ");
+    tempFavoriteButton.addClass("btn position-absolute mb-1 mr-1");
+    if (favoriteImages[obj.id] === undefined){
+        tempFavoriteButton.addClass("btn-dark");
+    } else {
+        tempFavoriteButton.addClass("btn-danger");
+    }
+    tempFavoriteButton.append($("<img>").attr("src","assets/images/favorite.png").attr("style","height: 100%"));
+    tempFavoriteButton.text("Favorite");
+    tempImageOverlay.append(tempFavoriteButton);
+
     var tempCard = $("<div>");
     tempCard.addClass("card bg-dark col-md-3 col-sm-6 col-12 p-0  mt-2 mb-4 text-light imgCard");
+    tempCard.attr("style", "height: 100%");
     tempCard.append(tempImage);
-    var tempImageOverlay = $("<div>");
-    tempImageOverlay.addClass("card-img-overlay text-center p-0");
-    tempImageOverlay.attr("style", "height: 100%; background-color: rgba(0,0,0,0);");
-    var tempCardText = $("<h5>");
-    tempCardText.addClass("cardText");
-    tempCardText.attr("style", "background-color: rgba(0,0,0,.7);");
-    tempCardText.text(obj.title);
-    tempImageOverlay.append(tempCardText);
     tempCard.append(tempImageOverlay);
-    var tempCardText = $("<h5>");
-    tempCardText.addClass("text-center");
-    tempCardText.text(obj.rating);
-    tempCard.append(tempCardText);
-    tempCard.attr("style", "height: 100%")
+    
     return tempCard;
 }
 
@@ -78,16 +96,15 @@ $(document).on("click", ".search-tag", function(event){
 })
 
 $(document).on("click", ".imgCard", function(event){
+    if ($(event.target).is("button")) return;
     image = $(".imgCard-img", this);
-    console.log(image.attr("class"))
-    var state = $(this).attr("data-state");
-    if (state === "still"){
-        newUrl = $(this).attr("data-animate");
-        $(this).attr("src", $(this).attr("data-animate"));
-        $(this).attr("data-state", "animate");
-    } else  if (state === "animate") {
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still");
+    var state = image.data("animated");
+    if (!state){
+        image.attr("src", image.data("animated-url"));
+        image.data("animated", true)
+    } else if (state) {
+        image.attr("src", image.data("still-url"));
+        image.data("animated", false)
     }
 })
 
