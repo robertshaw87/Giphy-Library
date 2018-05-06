@@ -4,6 +4,7 @@ var numImages = 12;
 var moreImagesCount = 12;
 var favoriteImages = {};
 var homePictures = [];
+var currentTag = "";
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
 function displayButtons() {
@@ -63,13 +64,7 @@ function makeImage(obj) {
     return tempCard;
 }
 
-function displayHome() {
-    $("#pictures-area").empty();
-    for (var i=0; i<homePictures.length; i++) {
-        $("#pictures-area").append($("<div>").addClass("col col-md-1 col-lg-1 m-0 p-0"));
-        $("#pictures-area").append(makeImage(homePictures[i]));
-    }
-
+function displayHomeUtilityButton () {
     $("#utility-area").empty();
     var tempButton = $("<button>");
     tempButton.addClass("btn btn-info col");
@@ -78,6 +73,15 @@ function displayHome() {
     $("#utility-area").append($("<div>").addClass("col"));
     $("#utility-area").append(tempButton)
     $("#utility-area").append($("<div>").addClass("col"));
+}
+
+function displayHome() {
+    $("#pictures-area").empty();
+    for (var i=0; i<homePictures.length; i++) {
+        $("#pictures-area").append($("<div>").addClass("col col-md-1 col-lg-1 m-0 p-0"));
+        $("#pictures-area").append(makeImage(homePictures[i]));
+    }
+    displayHomeUtilityButton();
 }
 
 function displayFavorites() {
@@ -98,9 +102,20 @@ function displayFavorites() {
     $("#utility-area").append($("<div>").addClass("col"));
 }
 
-$(document).on("click", "#moreBtb", function(event) {
-    favoriteImages = {};
-    displayFavorites();
+$(document).on("click", "#moreBtn", function(event) {
+        // set the query url for our ajax call, we dont want more than 10 results
+    moreImagesCount += numImages;
+    var userQuery = "https://api.giphy.com/v1/gifs/search?api_key="+apiKey+"&q="+currentTag+"&limit="+moreImagesCount;
+    $.ajax({
+        url: userQuery,
+        method: "GET"
+    }).then(function(response) {
+        homePictures = [];
+        while(response.data.length >0){
+            homePictures.push(response.data.pop());
+        }
+        displayHome();
+    })
 })
 
 
@@ -112,7 +127,6 @@ $(document).on("click", "#clearFav", function(event) {
 $(document).on("click", ".navHome", function(event) {
     $(".navHome").addClass("active");
     $(".navFav").removeClass("active");
-    displayButtons();
     displayHome()
 });
 
@@ -159,8 +173,12 @@ $(document).on("click", "#add-button", function(event) {
 
 // get the images we want with an ajax call to the giphy API when we click the button
 $(document).on("click", ".search-tag", function(event){
-    // set the query url for our ajax call, we dont want more than 10 results
-    var userQuery = "https://api.giphy.com/v1/gifs/search?api_key="+apiKey+"&q="+$(this).data("name")+"&limit="+numImages;
+    $(".navHome").addClass("active");
+    $(".navFav").removeClass("active");
+    displayHomeUtilityButton();
+    currentTag = $(this).data("name")
+    // set the query url for our ajax call, we dont want more than 12 results
+    var userQuery = "https://api.giphy.com/v1/gifs/search?api_key="+apiKey+"&q="+currentTag+"&limit="+numImages;
     $.ajax({
         url: userQuery,
         method: "GET"
