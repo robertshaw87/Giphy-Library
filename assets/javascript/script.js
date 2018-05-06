@@ -1,15 +1,16 @@
 var tagLibrary = ["cat", "kitten", "dog", "puppy", "bulldog", "squirrel", "penguin", "corgi"];
 var apiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
 var numImages = 12;
+var moreImagesCount = 12;
 var favoriteImages = {};
-var homePictures;
+var homePictures = [];
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
 function displayButtons() {
     $("#buttons-area").empty();
     for (var i=0; i<tagLibrary.length; i++) {
         var newButton = $("<button>");
-        newButton.addClass("btn btn-primary text-light search-tag mr-3 mb-3 ");
+        newButton.addClass("btn btn-primary text-light search-tag p-1 pr-2 pl-2 mr-3 mb-3 ");
         newButton.attr("type", "button");
         newButton.text(tagLibrary[i]);
         newButton.data("name", tagLibrary[i]);
@@ -68,6 +69,15 @@ function displayHome() {
         $("#pictures-area").append($("<div>").addClass("col col-md-1 col-lg-1 m-0 p-0"));
         $("#pictures-area").append(makeImage(homePictures[i]));
     }
+
+    $("#utility-area").empty();
+    var tempButton = $("<button>");
+    tempButton.addClass("btn btn-info col");
+    tempButton.attr("id", "moreBtn")
+    tempButton.text("More Images");
+    $("#utility-area").append($("<div>").addClass("col"));
+    $("#utility-area").append(tempButton)
+    $("#utility-area").append($("<div>").addClass("col"));
 }
 
 function displayFavorites() {
@@ -77,23 +87,43 @@ function displayFavorites() {
         $("#pictures-area").append($("<div>").addClass("col col-md-1 col-lg-1 m-0 p-0"));
         $("#pictures-area").append(makeImage(favoriteImages[tempKeys[i]]));
     }
+
+    $("#utility-area").empty();
+    var tempButton = $("<button>");
+    tempButton.addClass("btn btn-warning col");
+    tempButton.attr("id", "clearFav")
+    tempButton.text("Clear Favorites");
+    $("#utility-area").append($("<div>").addClass("col"));
+    $("#utility-area").append(tempButton)
+    $("#utility-area").append($("<div>").addClass("col"));
 }
 
-$(document).on("click", ".navHome", function(event){
+$(document).on("click", "#moreBtb", function(event) {
+    favoriteImages = {};
+    displayFavorites();
+})
+
+
+$(document).on("click", "#clearFav", function(event) {
+    favoriteImages = {};
+    displayFavorites();
+})
+
+$(document).on("click", ".navHome", function(event) {
     $(".navHome").addClass("active");
     $(".navFav").removeClass("active");
     displayButtons();
     displayHome()
 });
 
-$(document).on("click", ".navFav", function(event){
+$(document).on("click", ".navFav", function(event) {
     $(".navFav").addClass("active");
     $(".navHome").removeClass("active");
     displayButtons();
     displayFavorites();
 });
 
-$(document).on("click", ".favBtn", function(event){
+$(document).on("click", ".favBtn", function(event) {
     var ImageObj = $(this).data("favObject");
     if (favoriteImages[ImageObj.id]){
         delete favoriteImages[ImageObj.id]
@@ -135,16 +165,11 @@ $(document).on("click", ".search-tag", function(event){
         url: userQuery,
         method: "GET"
     }).then(function(response) {
-        $("#pictures-area").empty();
         homePictures = [];
-        var result = response.data;
-        for (var i=0; i<result.length; i++) {
-            homePictures.push(result[i])
-            $("#pictures-area").append($("<div>").addClass("col col-md-1 col-lg-1 m-0 p-0"));
-            $("#pictures-area").append(makeImage(result[i]));
-
-
+        while(response.data.length >0){
+            homePictures.push(response.data.pop());
         }
+        displayHome();
       })
 })
 
@@ -162,5 +187,6 @@ $(document).on("click", ".imgCard", function(event){
 })
 
 $(document).ready(function() {
+    displayHome()
     displayButtons()
 });
