@@ -1,3 +1,8 @@
+body {
+    background-image: url("../images/background.png");
+    background-color: #ccc;
+}
+
 nav {
     background-color: rgba(9,18,16,1);
 }
