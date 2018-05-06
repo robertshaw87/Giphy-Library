@@ -1,5 +1,6 @@
 // the default values for the category buttons, the user will add to this through the input element
 var tagLibrary = ["cat", "kitten", "dog", "puppy", "bulldog", "squirrel", "penguin", "corgi"];
+
 // this is my giphy api key
 var giphyApiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
 
@@ -8,10 +9,10 @@ var numImages = 12;
 // this tracks the number of images we want with a more images button press
     // will be incremented by numImages before the ajax call
 var moreImagesCount = numImages;
+
 // storage for the images the user has favorited
     // key will be the gif id, value will be the entire image object that giphy passes us for that image id
 var favoriteImages = {};
-
 // will be storing all the pictures that we want displayed on the homepage
 var homePictures = [];
 // this stores the current image tag that we're searching for in order to help with the more images button logic
