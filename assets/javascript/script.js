@@ -1,4 +1,4 @@
-var tagLibrary = ["cat", "kitten", "puppy"];
+var tagLibrary = ["cat", "kitten", "dog", "puppy", "bulldog", "corgi"];
 var apiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
 var numImages = 12;
 var favoriteImages = {};
@@ -8,7 +8,7 @@ function displayButtons() {
     $("#buttons-area").empty();
     for (var i=0; i<tagLibrary.length; i++) {
         var newButton = $("<button>");
-        newButton.addClass("btn btn-outline-secondary text-light search-tag");
+        newButton.addClass("btn btn-outline-secondary text-light search-tag mr-3 mb-3 ");
         newButton.attr("type", "button");
         newButton.text(tagLibrary[i]);
         newButton.data("name", tagLibrary[i]);
@@ -53,7 +53,7 @@ function makeImage(obj) {
     tempImageOverlay.append(tempFavoriteButton);
 
     var tempCard = $("<div>");
-    tempCard.addClass("card bg-dark col-md-3 col-sm-6 col-12 p-0  mt-2 mb-4 text-light imgCard");
+    tempCard.addClass("card bg-dark col-lg-3 col-md-5 col-sm-6 col-12 p-0  mt-2 mb-4 text-light imgCard");
     tempCard.attr("style", "height: 100%");
     tempCard.append(tempImage);
     tempCard.append(tempImageOverlay);
@@ -74,16 +74,22 @@ $(document).on("click", ".favBtn", function(event){
     }
 });
 
+$("#user-input").keydown(function (event){
+    if (event.which === 13){
+        $("#add-button").click();
+    }
+});
 
 // add the category we input when we click the add button
 $(document).on("click", "#add-button", function(event) {
-    // event.preventDefault();
+    event.preventDefault();
     // This line of code will grab the input from the input area
     var newQuery = $("#user-input").val().trim();
     // clear the input area
     $("#user-input").val("");
+    if (newQuery != "") {
     tagLibrary.push(newQuery);
-
+    }
     // Calling renderButtons which handles the processing of our movie array
     displayButtons();
 
@@ -101,7 +107,7 @@ $(document).on("click", ".search-tag", function(event){
         var result = response.data;
         for (var i=0; i<result.length; i++) {
             // $("#pictures-area").append($("<div>").addClass("clearfix"))
-            $("#pictures-area").append($("<div>").addClass("col col-md-1 m-0 p-0"));
+            $("#pictures-area").append($("<div>").addClass("col col-md-1 col-lg-1 m-0 p-0"));
             $("#pictures-area").append(makeImage(result[i]));
 
 

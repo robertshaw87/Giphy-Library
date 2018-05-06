@@ -25,8 +25,8 @@
         <div class="row">
             <div class="col-lg-3 col-md-4 col-12" id="search-area">
                 <div class="row p-2">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Track another category" id="user-input">
+                    <div class="input-group mb-3" onsubmit="return false;">
+                        <input type="text" class="form-control" placeholder="Track another category" onfocus="this.placeholder=''" onblur="this.placeholder='Track another category'" id="user-input">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary" type="button" id="add-button">Add</button>
                         </div>
