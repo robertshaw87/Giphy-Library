@@ -1,7 +1,7 @@
 var tagLibrary = ["cat", "kitten", "puppy"];
 var apiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
 var numImages = 12;
-var favoriteImages = {dTJd5ygpxkzWo: "as"};
+var favoriteImages = {};
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
 function displayButtons() {
@@ -17,7 +17,7 @@ function displayButtons() {
 }
 
 function makeImage(obj) {
-    console.log(obj)
+
     var tempImage = $("<img>");
     tempImage.addClass("card-img imgCard-img"); 
     tempImage.attr("src", obj.images.fixed_width_still.url);
@@ -42,13 +42,13 @@ function makeImage(obj) {
 
     var tempFavoriteButton = $("<button>");
     tempFavoriteButton.attr("style", "bottom: 0; right: 0 ");
-    tempFavoriteButton.addClass("btn position-absolute mb-1 mr-1");
-    if (favoriteImages[obj.id] === undefined){
+    tempFavoriteButton.addClass("btn position-absolute mb-1 mr-1 favBtn");
+    if (!favoriteImages[obj.id]){
         tempFavoriteButton.addClass("btn-dark");
     } else {
         tempFavoriteButton.addClass("btn-danger");
     }
-    tempFavoriteButton.append($("<img>").attr("src","assets/images/favorite.png").attr("style","height: 100%"));
+    tempFavoriteButton.data("favObject", obj);
     tempFavoriteButton.text("Favorite");
     tempImageOverlay.append(tempFavoriteButton);
 
@@ -60,6 +60,20 @@ function makeImage(obj) {
     
     return tempCard;
 }
+
+$(document).on("click", ".favBtn", function(event){
+    var ImageObj = $(this).data("favObject");
+    if (favoriteImages[ImageObj.id]){
+        delete favoriteImages[ImageObj.id]
+        $(this).removeClass("btn-danger");
+        $(this).addClass("btn-dark");
+    } else {
+        favoriteImages[ImageObj.id] = ImageObj;
+        $(this).removeClass("btn-dark");
+        $(this).addClass("btn-danger");
+    }
+});
+
 
 // add the category we input when we click the add button
 $(document).on("click", "#add-button", function(event) {
@@ -110,5 +124,4 @@ $(document).on("click", ".imgCard", function(event){
 
 $(document).ready(function() {
     displayButtons()
-
 });
