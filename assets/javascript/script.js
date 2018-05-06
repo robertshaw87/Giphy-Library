@@ -16,21 +16,21 @@ function displayButtons() {
 }
 
 function makeImage(obj) {
-    console.log(obj);
     var tempImage = $("<img>");
-    tempImage.addClass("card-img-top"); 
+    tempImage.addClass("card-img-top imgCard-img"); 
     tempImage.attr("src", obj.images.fixed_width_still.url);
     tempImage.attr("alt", obj.title)
     tempImage.data("animated", false)
     tempImage.data("still-url", obj.images.fixed_width_still.url);
     tempImage.data("animated-url", obj.images.fixed_width.url)
     var tempCard = $("<div>");
-    tempCard.addClass("card bg-dark col-md-3 col-sm-6 col-12 p-0 mt-2 mb-2 text-light");
+    tempCard.addClass("card bg-dark col-md-3 col-sm-6 col-12 p-0  mt-2 mb-4 text-light imgCard");
     tempCard.append(tempImage);
     var tempImageOverlay = $("<div>");
     tempImageOverlay.addClass("card-img-overlay text-center p-0");
     tempImageOverlay.attr("style", "height: 100%; background-color: rgba(0,0,0,0);");
     var tempCardText = $("<h5>");
+    tempCardText.addClass("cardText");
     tempCardText.attr("style", "background-color: rgba(0,0,0,.7);");
     tempCardText.text(obj.title);
     tempImageOverlay.append(tempCardText);
@@ -45,7 +45,7 @@ function makeImage(obj) {
 
 // add the category we input when we click the add button
 $(document).on("click", "#add-button", function(event) {
-    event.preventDefault();
+    // event.preventDefault();
     // This line of code will grab the input from the input area
     var newQuery = $("#user-input").val().trim();
     // clear the input area
@@ -61,7 +61,6 @@ $(document).on("click", "#add-button", function(event) {
 $(document).on("click", ".search-tag", function(event){
     // set the query url for our ajax call, we dont want more than 10 results
     var userQuery = "https://api.giphy.com/v1/gifs/search?api_key="+apiKey+"&q="+$(this).data("name")+"&limit="+numImages;
-    console.log(userQuery);
     $.ajax({
         url: userQuery,
         method: "GET"
@@ -69,12 +68,27 @@ $(document).on("click", ".search-tag", function(event){
         $("#pictures-area").empty();
         var result = response.data;
         for (var i=0; i<result.length; i++) {
-            $("#pictures-area").append($("<div>").addClass("clearfix"))
-            $("#pictures-area").append(makeImage(result[i]));
+            // $("#pictures-area").append($("<div>").addClass("clearfix"))
             $("#pictures-area").append($("<div>").addClass("col col-md-1 m-0 p-0"));
+            $("#pictures-area").append(makeImage(result[i]));
+
 
         }
       })
+})
+
+$(document).on("click", ".imgCard", function(event){
+    image = $(".imgCard-img", this);
+    console.log(image.attr("class"))
+    var state = $(this).attr("data-state");
+    if (state === "still"){
+        newUrl = $(this).attr("data-animate");
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+    } else  if (state === "animate") {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+    }
 })
 
 $(document).ready(function() {

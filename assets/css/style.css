@@ -5,7 +5,7 @@
     transform: translate(-50%, -50%);
 }
 
-/* cheter the text in the middle of the top or bottom of the parent object */
+/* center the text in the middle of the top or bottom of the parent object */
 .centered-top, .centered-bottom{
     position: absolute;
     width: 100%;
