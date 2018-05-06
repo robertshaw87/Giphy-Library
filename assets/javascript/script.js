@@ -62,16 +62,35 @@ function makeImage(obj) {
     return tempCard;
 }
 
+function displayHome() {
+    $("#pictures-area").empty();
+    for (var i=0; i<homePictures.length; i++) {
+        $("#pictures-area").append($("<div>").addClass("col col-md-1 col-lg-1 m-0 p-0"));
+        $("#pictures-area").append(makeImage(homePictures[i]));
+    }
+}
+
+function displayFavorites() {
+    $("#pictures-area").empty();
+    var tempKeys = Object.keys(favoriteImages);
+    for (var i=0; i<tempKeys.length; i++) {
+        $("#pictures-area").append($("<div>").addClass("col col-md-1 col-lg-1 m-0 p-0"));
+        $("#pictures-area").append(makeImage(favoriteImages[tempKeys[i]]));
+    }
+}
+
 $(document).on("click", ".navHome", function(event){
     $(".navHome").addClass("active");
     $(".navFav").removeClass("active");
     displayButtons();
+    displayHome()
 });
 
 $(document).on("click", ".navFav", function(event){
     $(".navFav").addClass("active");
     $(".navHome").removeClass("active");
     displayButtons();
+    displayFavorites();
 });
 
 $(document).on("click", ".favBtn", function(event){
