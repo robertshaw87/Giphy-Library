@@ -60,9 +60,7 @@ function makeImage(obj) {
 
     // make the image overlay that will only show on mouseover
     var tempImageOverlay = $("<div>");
-    tempImageOverlay.addClass("card-img-overlay text-center p-1 infoCard");
-    // tempImageOverlay.attr("style", "height: 100%; background-color: rgba(0,0,0,0.7);");
-    
+    tempImageOverlay.addClass("card-img-overlay text-center p-1 infoCard");    
     // this is going to be the title of the gif that we're adding to the image overlay
     var tempImageTitle = $("<h6>");
     tempImageTitle.addClass("card-title");
@@ -222,6 +220,7 @@ $(document).on("click", "#moreBtn", function(event) {
 // clears all the stored favorites from the user on click
 $(document).on("click", "#clearFav", function(event) {
     favoriteImages = {};
+    Cookies.set("fav", favoriteImages, {expires: 7});
     displayFavorites();
 })
 
@@ -260,8 +259,9 @@ $(document).on("click", ".favBtn", function(event) {
         // if the image wasn't already favorited, we add it to the favorite storage object
         favoriteImages[ImageObj.id] = ImageObj;
         // change the favorite button state to reflect the new status
-        $(this).attr("src", "assets/images/yesFav.png")
+        $(this).attr("src", "assets/images/yesFav.png");
     }
+    Cookies.set("fav", favoriteImages, {expires: 7});
 });
 
 // makes it so the user can press enter instead of having to click the submit button to add their input to the buttons library
@@ -350,7 +350,10 @@ $(document).on("click", ".imgCard", function(event){
 })
 
 $(document).ready(function() {
-    // default to the homepage display upon page load
+    favoriteImages = Cookies.getJSON("fav");
+    if ((favoriteImages === undefined) || (typeof favoriteImages != "object")) {
+        favoriteImages = {};
+    }
     displayHome();
     displayButtons();
 });
