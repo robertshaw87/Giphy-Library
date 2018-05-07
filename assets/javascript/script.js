@@ -77,19 +77,21 @@ function makeImage(obj) {
 
     // this is the favorite button, it will be toggleable and also shows whether the current picture is favorited
         // also will be hidden with the overlay
-    var tempFavoriteButton = $("<button>");
+    var tempFavoriteButton = $("<img>")
+    // starting state of the heart depending on if they were already in the favorites
+    if (!favoriteImages[obj.id]){
+        tempFavoriteButton.attr("src", "assets/images/notFav.png")
+    } else {
+        tempFavoriteButton.attr("src", "assets/images/yesFav.png")
+    }
+    // make the heart smaller
+    tempFavoriteButton.attr("height", "30px")
     // moving the button to the bottom right of the overlay
     tempFavoriteButton.attr("style", "bottom: 0; right: 0 ");
-    // favBtn is our own class used to refer to this button later
-    tempFavoriteButton.addClass("btn position-absolute favBtn mr-1 mb-1");
-    if (!favoriteImages[obj.id]){
-        tempFavoriteButton.addClass("btn-dark");
-    } else {
-        tempFavoriteButton.addClass("btn-danger");
-    }
     // stores the image object as data thanks to jQuery. We can pull this out later when we want to show the image
     tempFavoriteButton.data("favObject", obj);
-    tempFavoriteButton.text("Favorite");
+    // favBtn is our own class used to refer to this button later
+    tempFavoriteButton.addClass("position-absolute favBtn mr-1 mb-1");
     // adding the favorite button to the overlay
     tempImageOverlay.append(tempFavoriteButton);
 
@@ -143,13 +145,22 @@ function displayFavorites() {
         // calling the makeImage function with the image objects we have stored in favoriteImages in order to make the image cards
         $("#pictures-area").append(makeImage(favoriteImages[tempKeys[i]]));
     }
+    // display the clear favorites button
+    displayFavUtilityButton();
+}
 
-    // creates the clear favorites button that will remove all the favorites the user has
+// creates the clear favorites button that will remove all the favorites the user has
+function displayFavUtilityButton() {
+    // clear the utility area for the incoming button
     $("#utility-area").empty();
+    // make an empty button object
     var tempButton = $("<button>");
+    // add the coloring and bootstrap class for the button
     tempButton.addClass("btn btn-warning col");
+    // set the id so we can listen to this later
     tempButton.attr("id", "clearFav")
     tempButton.text("Clear Favorites");
+    // add the button to the utility area, with flanking cols so its centered
     $("#utility-area").append($("<div>").addClass("col"));
     $("#utility-area").append(tempButton)
     $("#utility-area").append($("<div>").addClass("col"));
@@ -213,14 +224,12 @@ $(document).on("click", ".favBtn", function(event) {
         // if the image was already favorited, we delete it from the favorite storage object
         delete favoriteImages[ImageObj.id]
         // change the favorite button state to reflect the new status
-        $(this).removeClass("btn-danger");
-        $(this).addClass("btn-dark");
+        $(this).attr("src", "assets/images/notFav.png");
     } else {
         // if the image wasn't already favorited, we add it to the favorite storage object
         favoriteImages[ImageObj.id] = ImageObj;
         // change the favorite button state to reflect the new status
-        $(this).removeClass("btn-dark");
-        $(this).addClass("btn-danger");
+        $(this).attr("src", "assets/images/yesFav.png")
     }
 });
 
@@ -280,7 +289,7 @@ $(document).on("click", ".search-tag", function(event){
 // animate the gif if the user clicks anywhere within the card wrapping it (includes the image overlay)
 $(document).on("click", ".imgCard", function(event){
     // will not trigger the pause/play effect on the gif if the user clicks on the favorite button
-    if ($(event.target).is("button")) {
+    if ($(event.target).is(".favBtn")) {
         return;
     }
     // find the image element stored within the card
