@@ -77,23 +77,52 @@ function makeImage(obj) {
 
     // this is the favorite button, it will be toggleable and also shows whether the current picture is favorited
         // also will be hidden with the overlay
-    var tempFavoriteButton = $("<img>")
+    var tempFavoriteButton = $("<img>");
     // starting state of the heart depending on if they were already in the favorites
     if (!favoriteImages[obj.id]){
-        tempFavoriteButton.attr("src", "assets/images/notFav.png")
+        tempFavoriteButton.attr("src", "assets/images/notFav.png");
     } else {
-        tempFavoriteButton.attr("src", "assets/images/yesFav.png")
+        tempFavoriteButton.attr("src", "assets/images/yesFav.png");
     }
     // make the heart smaller
-    tempFavoriteButton.attr("height", "30px")
+    tempFavoriteButton.attr("height", "30px");
     // moving the button to the bottom right of the overlay
-    tempFavoriteButton.attr("style", "bottom: 0; right: 0 ");
+    tempFavoriteButton.attr("style", "bottom: 0; right: 0;");
     // stores the image object as data thanks to jQuery. We can pull this out later when we want to show the image
     tempFavoriteButton.data("favObject", obj);
     // favBtn is our own class used to refer to this button later
+    // absolute positioning so its positioned relative to the overlay
     tempFavoriteButton.addClass("position-absolute favBtn mr-1 mb-1");
     // adding the favorite button to the overlay
     tempImageOverlay.append(tempFavoriteButton);
+
+    // the download button, it's on the overlay so will be hidden when the overlay is hidden
+    var tempDownloadButton = $("<img>");
+    // setting the image to the download image
+    tempDownloadButton.attr("src", "assets/images/download.png");
+    // making the image the same size as the favorites button
+    tempDownloadButton.attr("height", "25px");
+    // move the button to the bottom left of the overlay
+    tempDownloadButton.attr("style", "bottom: 0; left:0;");
+    console.log(obj);
+    // store the url where the user will download the image
+    tempDownloadButton.data("downloadUrl", obj.images.original.url);
+    // downBtn is our own class used to refer to this button later
+    // absolute positioning so its positioned relative to the overlay
+    tempDownloadButton.addClass("position-absolute downBtn ml-1 mb-1");
+    
+    // make a wrapper so the user can download the gif
+    var tempDownloadWrapper = $("<a>");
+    // set the link url to the gif location
+    tempDownloadWrapper.attr("href", obj.images.original.url);
+    // set default download name to the title of the image
+    tempDownloadWrapper.attr("download", obj.title);
+    // opens the image in a new window in case the browser doesn't support one click downloads
+    tempDownloadWrapper.attr("target", "_blank");
+    
+    // add the download button wrapper to the overlay
+    tempDownloadWrapper.append(tempDownloadButton);
+    tempImageOverlay.append(tempDownloadWrapper);
 
     // creates the wrapper card that we're going to add the image and the overlay to
     var tempCard = $("<div>");
