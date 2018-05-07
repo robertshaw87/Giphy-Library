@@ -23,7 +23,7 @@ var currentTag = "";
 
 // returns a random integer between 0 and the argument(doesn't inclue the argument)
 function randInt(maxInt){
-    return (Math.floor(Math.random() * (maxInt)))
+    return (Math.floor(Math.random() * (maxInt)));
 }
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
