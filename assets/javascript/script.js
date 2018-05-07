@@ -220,7 +220,8 @@ $(document).on("click", "#moreBtn", function(event) {
 // clears all the stored favorites from the user on click
 $(document).on("click", "#clearFav", function(event) {
     favoriteImages = {};
-    Cookies.set("fav", favoriteImages, {expires: 7});
+    // remove the copy stored in the local storage also
+    localStorage.removeItem("fav");
     displayFavorites();
 })
 
@@ -261,7 +262,8 @@ $(document).on("click", ".favBtn", function(event) {
         // change the favorite button state to reflect the new status
         $(this).attr("src", "assets/images/yesFav.png");
     }
-    Cookies.set("fav", favoriteImages, {expires: 7});
+    // stores the user's current favorites to the local storage after converting the json object into a string
+    localStorage.setItem("fav", JSON.stringify(favoriteImages));
 });
 
 // makes it so the user can press enter instead of having to click the submit button to add their input to the buttons library
@@ -350,8 +352,11 @@ $(document).on("click", ".imgCard", function(event){
 })
 
 $(document).ready(function() {
-    favoriteImages = Cookies.getJSON("fav");
-    if ((favoriteImages === undefined) || (typeof favoriteImages != "object")) {
+    // grab the user's stored favorites from the local storage
+        // parse the stored stringified json back into an object
+    favoriteImages = JSON.parse(localStorage.getItem("fav"));
+    // if the user doesn't have favorites stored, instantiate favorite images as an empty object
+    if (!favoriteImages) {
         favoriteImages = {};
     }
     displayHome();
