@@ -206,10 +206,14 @@ function displayFavUtilityButton() {
 function displayMovie(movieObj) {
     console.log(movieObj);
     $("#movie-area").empty();
+    var posterCard = $("<div>");
+    posterCard.addClass("card");
     var poster = $("<img>");
+    poster.addClass("card-img");
     poster.attr("src", movieObj.Poster);
-    console.log(poster)
-    $("#movie-area").append(poster);
+    posterCard.append(poster);
+    
+    $("#movie-area").append(posterCard);
 }
 
 // if the user clicks the more images button, will find 12 new images to display and put them on the top of the pictures area
