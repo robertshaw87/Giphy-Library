@@ -55,11 +55,13 @@ function makeImage(obj) {
     // url of the still and animated pictures stored for later retrieval to toggle picture state
     tempImage.attr("data-still-url", obj.images.fixed_width_still.url);
     tempImage.attr("data-animated-url", obj.images.fixed_width.url)
+    // make the image circular by default
+    tempImage.attr("style", "border-radius: 50%");
 
     // make the image overlay that will only show on mouseover
     var tempImageOverlay = $("<div>");
     tempImageOverlay.addClass("card-img-overlay text-center p-1 infoCard");
-    tempImageOverlay.attr("style", "height: 100%; background-color: rgba(0,0,0,0.7);");
+    // tempImageOverlay.attr("style", "height: 100%; background-color: rgba(0,0,0,0.7);");
     
     // this is going to be the title of the gif that we're adding to the image overlay
     var tempImageTitle = $("<h6>");
@@ -104,7 +106,6 @@ function makeImage(obj) {
     tempDownloadButton.attr("height", "25px");
     // move the button to the bottom left of the overlay
     tempDownloadButton.attr("style", "bottom: 0; left:0;");
-    console.log(obj);
     // store the url where the user will download the image
     tempDownloadButton.data("downloadUrl", obj.images.original.url);
     // downBtn is our own class used to refer to this button later
@@ -127,7 +128,8 @@ function makeImage(obj) {
     // creates the wrapper card that we're going to add the image and the overlay to
     var tempCard = $("<div>");
     tempCard.addClass("card bg-dark col-lg-3 col-md-5 col-sm-6 col-12 p-0  mt-2 mb-4 text-light imgCard");
-    tempCard.attr("style", "height: 100%");
+    // make the card circular by default
+    tempCard.attr("style", "border-radius: 50%");
     tempCard.append(tempImage);
     tempCard.append(tempImageOverlay);
     
@@ -318,7 +320,7 @@ $(document).on("click", ".search-tag", function(event){
 // animate the gif if the user clicks anywhere within the card wrapping it (includes the image overlay)
 $(document).on("click", ".imgCard", function(event){
     // will not trigger the pause/play effect on the gif if the user clicks on the favorite button
-    if ($(event.target).is(".favBtn")) {
+    if ($(event.target).is(".favBtn") || $(event.target).is(".downBtn")) {
         return;
     }
     // find the image element stored within the card
@@ -330,18 +332,25 @@ $(document).on("click", ".imgCard", function(event){
         // set the image url to be the animated image
         image.attr("src", image.data("animated-url"));
         // change the image state
-        image.data("animated", true)
+        image.data("animated", true);
+        // make the iamge and the wrapper card rectangular while playing
+        image.attr("style", "border-radius: 10px");
+        $(this).attr("style", "border-radius: 10px");
+        
     // if the image was already animated, we "pause" the gif
     } else if (state) {
         // set the image url to be the still image
         image.attr("src", image.data("still-url"));
         // change the image state
-        image.data("animated", false)
+        image.data("animated", false);
+        // make the image and the wrapper card circular
+        image.attr("style", "border-radius: 50%");
+        $(this).attr("style", "border-radius: 50%");
     }
 })
 
 $(document).ready(function() {
     // default to the homepage display upon page load
-    displayHome()
-    displayButtons()
+    displayHome();
+    displayButtons();
 });

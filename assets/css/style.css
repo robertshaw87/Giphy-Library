@@ -25,12 +25,26 @@ nav {
     position: relative;
 }
 
+.imgCard {
+    height: 100%;
+}
+
+
 /* defaults the image overlay of the image cards to be invisible */
 .infoCard {
     visibility: hidden;
+    border-radius: 10px;
+    height: 100%; 
+    background-color: rgba(0,0,0,0.7);
+}
+
+/* make the image card rectangular on hover */
+.imgCard:hover, .imgCard:hover .imgCard-img {
+    border-radius: 10px !important;
 }
 
 /* show the overlay upon hover */
 .imgCard:hover .infoCard {
     visibility: initial;
 }
+
