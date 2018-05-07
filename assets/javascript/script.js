@@ -342,22 +342,24 @@ $(document).on("click", ".search-tag", function(event){
     $.ajax({
         url: movieQuery,
         method: "GET"
-    }).then(function(response){
-            
-        var curMovie = response.Search[randInt(response.Search.length)];
-        console.log(curMovie);
-        movieParams = $.param({
+        }).then(function(response){
+            var movArr = response.Search;
+            var curMovie = response.Search[randInt(response.Search.length)];  
+            movieParams = $.param({
             apikey : movieKey,
             i : curMovie.imdbID,
-            plot : "full"
-        });
-        $.ajax({
-            url: "http://www.omdbapi.com/?" + movieParams,
-            method: "GET"
-        }).then(function(response){
-            displayMovie(response);
-        })
-    })
+            plot : "full"});
+            if (curMovie.Poster !== "N/A"){
+                $.ajax({
+                    url: "http://www.omdbapi.com/?" + movieParams,
+                    method: "GET"
+                }).then(function(response){
+                    displayMovie(response);
+                })
+            } else {
+                $("#movie-area").empty();
+            }
+    });
 })
 
 // animate the gif if the user clicks anywhere within the card wrapping it (includes the image overlay)

@@ -9,6 +9,12 @@ nav {
     background-color: rgba(9,18,16,1);
 }
 
+.nav {
+    position: absolute !important;
+    right: 20px !important;   
+    bottom: 0 !important;
+}
+
 /* makes all the buttons pop out */
 .btn {
     border-style: outset;
