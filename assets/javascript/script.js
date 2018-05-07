@@ -4,6 +4,9 @@ var tagLibrary = ["cat", "kitten", "dog", "puppy", "bulldog", "squirrel", "pengu
 // this is my giphy api key
 var giphyApiKey = "eHgmDylg8joewr7ihES0vUNAqBZPIsTj";
 
+// my omdb api key
+var movieKey = "6b7754e4"
+
 // the default number of images we grab with each api call
 var numImages = 12;
 // this tracks the number of images we want with a more images button press
@@ -17,6 +20,11 @@ var favoriteImages = {};
 var homePictures = [];
 // this stores the current image tag that we're searching for in order to help with the more images button logic
 var currentTag = "";
+
+// returns a random integer between 0 and the argument(doesn't inclue the argument)
+function randInt(maxInt){
+    return (Math.floor(Math.random() * (maxInt)))
+}
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
 function displayButtons() {
@@ -195,6 +203,15 @@ function displayFavUtilityButton() {
     $("#utility-area").append($("<div>").addClass("col"));
 }
 
+function displayMovie(movieObj) {
+    console.log(movieObj);
+    $("#movie-area").empty();
+    var poster = $("<img>");
+    poster.attr("src", movieObj.Poster);
+    console.log(poster)
+    $("#movie-area").append(poster);
+}
+
 // if the user clicks the more images button, will find 12 new images to display and put them on the top of the pictures area
 $(document).on("click", "#moreBtn", function(event) {
     // set the query url for our ajax call, increment the number of images we want
@@ -316,7 +333,31 @@ $(document).on("click", ".search-tag", function(event){
         }
         // display the images we received
         displayHome();
-      })
+    })
+    var movieParams = $.param({
+            apikey : movieKey,
+            s : currentTag,
+    });
+    var movieQuery = "http://www.omdbapi.com/?" + movieParams
+    $.ajax({
+        url: movieQuery,
+        method: "GET"
+    }).then(function(response){
+            
+        var curMovie = response.Search[randInt(response.Search.length)];
+        console.log(curMovie);
+        movieParams = $.param({
+            apikey : movieKey,
+            i : curMovie.imdbID,
+            plot : "full"
+        });
+        $.ajax({
+            url: "http://www.omdbapi.com/?" + movieParams,
+            method: "GET"
+        }).then(function(response){
+            displayMovie(response);
+        })
+    })
 })
 
 // animate the gif if the user clicks anywhere within the card wrapping it (includes the image overlay)
