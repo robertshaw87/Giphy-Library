@@ -391,7 +391,7 @@ $(document).on("click", ".search-tag", function(event){
             apikey : movieKey,
             s : currentTag,
     });
-    var movieQuery = "http://www.omdbapi.com/?" + movieParams
+    var movieQuery = "https://www.omdbapi.com/?" + movieParams
     $.ajax({
         url: movieQuery,
         method: "GET"
@@ -404,7 +404,7 @@ $(document).on("click", ".search-tag", function(event){
             plot : "short"});
             if (curMovie.Poster !== "N/A"){
                 $.ajax({
-                    url: "http://www.omdbapi.com/?" + movieParams,
+                    url: "https://www.omdbapi.com/?" + movieParams,
                     method: "GET"
                 }).then(function(response){
                     // store the movie poster to be displayed
