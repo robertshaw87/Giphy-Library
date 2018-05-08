@@ -33,12 +33,11 @@ nav {
 
 .imgCard {
     height: 100%;
+    border-radius: 50%;
 }
 
 .imgCard-img {
-    height: 250px;
-    width: 250px;
-    border-radius: 100%;
+    border-radius: 50%;
 }
 
 /* defaults the image overlay of the image cards to be invisible */
