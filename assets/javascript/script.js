@@ -49,22 +49,22 @@ function displayButtons() {
 
 // make the image card we're putting into the images output area after we get passed an image obj from the Giphy api
 function makeImage(obj) {
-
+    console.log(obj)
     // make an image element to be the background of the card
     var tempImage = $("<img>");
     // bootstrap class to be the card background and our own imgCard-img class so we can refer to this later
     tempImage.addClass("card-img imgCard-img"); 
     // set the default picture to be the still image
-    tempImage.attr("src", obj.images.fixed_width_still.url);
+    tempImage.attr("src", obj.images.original_still.url);
     // alt text will be the title of the gif
     tempImage.attr("alt", obj.title);
     // default state of the picture is not animated
     tempImage.attr("data-animated", false);
     // url of the still and animated pictures stored for later retrieval to toggle picture state
-    tempImage.attr("data-still-url", obj.images.fixed_width_still.url);
-    tempImage.attr("data-animated-url", obj.images.fixed_width.url)
+    tempImage.attr("data-still-url", obj.images.original_still.url);
+    tempImage.attr("data-animated-url", obj.images.original.url)
     // make the image circular by default
-    tempImage.attr("style", "border-radius: 50%");
+    
 
     // make the image overlay that will only show on mouseover
     var tempImageOverlay = $("<div>");
@@ -135,7 +135,7 @@ function makeImage(obj) {
     var tempCard = $("<div>");
     tempCard.addClass("card bg-dark col-lg-3 col-md-5 col-sm-6 col-12 p-0  mt-2 mb-4 text-light imgCard");
     // make the card circular by default
-    tempCard.attr("style", "border-radius: 50%");
+    tempCard.attr("style", "border-radius: 100%");
     tempCard.append(tempImage);
     tempCard.append(tempImageOverlay);
     
@@ -203,16 +203,25 @@ function displayFavUtilityButton() {
     $("#utility-area").append($("<div>").addClass("col"));
 }
 
+// display the movie poster to the movie-area
 function displayMovie(movieObj) {
-    console.log(movieObj);
     $("#movie-area").empty();
-    var posterCard = $("<div>");
-    posterCard.addClass("card");
+    // make a new link as the wrapper around the movie poster
+    var posterCard = $("<a>");
+    // provide the link to the imdb page for the movie
+    posterCard.attr("href", "https://www.imdb.com/title/" + movieObj.imdbID);
+    posterCard.attr("target", "_blank");
+    posterCard.addClass("card movie-card");
     var poster = $("<img>");
-    poster.addClass("card-img");
+    poster.addClass("card-img movie-poster");
     poster.attr("src", movieObj.Poster);
     posterCard.append(poster);
-    
+    var posterInfo = $("<div>");
+    posterInfo.addClass("card-img-overlay text-center text-light p1 movie-info");
+    posterInfo.append($("<h6>").text(movieObj.Title).addClass("card-title"))
+    posterInfo.append($("<p>").text(movieObj.Released).addClass("card-text"))
+    posterInfo.append($("<p>").text(movieObj.Plot).addClass("card-text"))
+    posterCard.append(posterInfo)
     $("#movie-area").append(posterCard);
 }
 
@@ -223,6 +232,7 @@ $(document).on("click", "#moreBtn", function(event) {
     // we will be getting the total number of images we want from the giphy api
     var userQuery = "https://api.giphy.com/v1/gifs/search?api_key="+giphyApiKey+"&q="+currentTag+"&limit="+moreImagesCount;
     // sending the request to the Giphy api
+    
     $.ajax({
         url: userQuery,
         method: "GET"
@@ -328,6 +338,7 @@ $(document).on("click", ".search-tag", function(event){
         url: userQuery,
         method: "GET"
     }).then(function(response) {
+        
         // clear the pictures-area image storage array
         homePictures = [];
         // move the image objects from the api response to the storage array,
@@ -352,7 +363,7 @@ $(document).on("click", ".search-tag", function(event){
             movieParams = $.param({
             apikey : movieKey,
             i : curMovie.imdbID,
-            plot : "full"});
+            plot : "short"});
             if (curMovie.Poster !== "N/A"){
                 $.ajax({
                     url: "http://www.omdbapi.com/?" + movieParams,

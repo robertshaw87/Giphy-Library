@@ -35,6 +35,11 @@ nav {
     height: 100%;
 }
 
+.imgCard-img {
+    height: 250px;
+    width: 250px;
+    border-radius: 100%;
+}
 
 /* defaults the image overlay of the image cards to be invisible */
 .infoCard {
@@ -54,3 +59,12 @@ nav {
     visibility: initial;
 }
 
+.movie-info {
+    visibility: hidden;
+    background-color: rgba(0,0,0,0.7);
+    overflow-y: scroll;
+}
+
+.movie-card:hover .movie-info, .movie-info:hover {
+    visibility: initial;
+}
