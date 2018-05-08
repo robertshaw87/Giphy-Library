@@ -41,6 +41,24 @@ input {
 /* depresses buttons on hover */
 .btn:hover {
     border-style: inset;
+    animation-name: pulse;
+    animation-duration: .6s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+    0%{
+        transform: scale(1);
+        border-style: inset;
+    }
+    50% {
+        transform: scale(1.1);
+        border-style: outset;
+    }
+    100% {
+        transform: scale(1);
+        border-style: inset;
+    }
 }
 
 /* this affects the home and favorites tabs */
@@ -54,6 +72,21 @@ input {
     border-radius: 50%;
     border-width: 10px;
     border-style: solid;
+    animation-name: slide;
+    animation-duration: .5s;
+    animation-iteration-count: 1;
+}
+
+@keyframes slide {
+    0%{
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .imgCard-img {
@@ -72,6 +105,18 @@ input {
 /* make the image card rectangular on hover */
 .imgCard:hover, .imgCard:hover .imgCard-img {
     border-radius: 10px !important;
+    animation-name: grow;
+    animation-duration: .6s;
+    animation-iteration-count: 1;
+}
+
+@keyframes grow {
+    0%{
+        border-radius: 50%;
+    }
+    100% {
+        border-radius: 10px;
+    }
 }
 
 /* show the overlay upon hover */
@@ -81,7 +126,7 @@ input {
 
 /* font size for the gif title */
 .infoCard .card-title {
-    font-size: 35px;
+    font-size: 30px;
 }
 
 /* font size for the rating in the gif */
