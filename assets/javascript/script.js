@@ -20,11 +20,8 @@ var favoriteImages = {};
 var homePictures = [];
 // this stores the current image tag that we're searching for in order to help with the more images button logic
 var currentTag = "";
-
-// returns a random integer between 0 and the argument(doesn't inclue the argument)
-function randInt(maxInt){
-    return (Math.floor(Math.random() * (maxInt)));
-}
+// this is the movie poster to be displayed on the homepage
+var homeMovie = undefined;
 
 // display all the values of the tagLibrary as buttons in the buttons-area div
 function displayButtons() {
@@ -140,11 +137,20 @@ function makeImage(obj) {
     return tempCard;
 }
 
+// displays the banner over the images with the argument as the zone descriptor
 function displayBanner(str) {
     $("#banner-area").empty();
+    // make the jumbotron
     var banner = $("<div>");
-    banner.addClass("jumbotron jumbotron-fluid");
-    banner.append($("<div>").addClass("display-4 banner-text").text("Welcome to the " + str + " zone!"));
+    banner.addClass("jumbotron col");
+    // this is the wrapper around the banner content
+    var bannerCont = $("<div>");
+    bannerCont.addClass("row");
+    bannerCont.append($("<div>").addClass("col"));    
+    bannerCont.append($("<div>").addClass("display-4 banner-text").text("Welcome to the " + str + " zone!"));
+    bannerCont.append($("<div>").addClass("col"));    
+    banner.append(bannerCont);
+    
     $("#banner-area").html(banner);
 }
 
@@ -178,6 +184,7 @@ function displayHome() {
     } else {
         $("#banner-area").empty()
     }
+    displayMovie();
     // show the more images button again
     displayHomeUtilityButton();
 }
@@ -192,7 +199,8 @@ function displayFavorites() {
         // calling the makeImage function with the image objects we have stored in favoriteImages in order to make the image cards
         $("#pictures-area").append(makeImage(favoriteImages[tempKeys[i]]));
     }
-    displayBanner("favorites")
+    $("#movie-area").empty();
+    displayBanner("favorites");
     // display the clear favorites button
     displayFavUtilityButton();
 }
@@ -215,30 +223,43 @@ function displayFavUtilityButton() {
 }
 
 // display the movie poster to the movie-area
-function displayMovie(movieObj) {
+function displayMovie() {
+    if (!homeMovie){
+        $("#movie-area").empty();
+        return;
+    }
+
     $("#movie-area").empty();
     // make a new link as the wrapper around the movie poster
     var posterCard = $("<a>");
     // provide the link to the imdb page for the movie that opens in a seperate tab
-    posterCard.attr("href", "https://www.imdb.com/title/" + movieObj.imdbID);
+    posterCard.attr("href", "https://www.imdb.com/title/" + homeMovie.imdbID);
     posterCard.attr("target", "_blank");
     posterCard.addClass("card movie-card col");
     // making the movie poster that's going to be the content of the link
     var poster = $("<img>");
     poster.addClass("card-img movie-poster");
-    poster.attr("src", movieObj.Poster);
+    poster.attr("src", homeMovie.Poster);
     posterCard.append(poster);
     var posterInfo = $("<div>");
     // This is the card overlay that has the title, year released and the plot of the movie
     posterInfo.addClass("card-img-overlay text-center text-light p1 movie-info");
-    posterInfo.append($("<h6>").text(movieObj.Title).addClass("card-title"))
-    posterInfo.append($("<p>").text(movieObj.Released).addClass("card-text"))
-    posterInfo.append($("<p>").text(movieObj.Plot).addClass("card-text"))
+    posterInfo.append($("<h6>").text(homeMovie.Title).addClass("card-title"))
+    posterInfo.append($("<p>").text(homeMovie.Released).addClass("card-text"))
+    posterInfo.append($("<p>").text(homeMovie.Plot).addClass("card-text"))
     posterCard.append(posterInfo)
     // adding the poster and the info to the movie area
-    $("#movie-area").append($("<div>").addClass("col-1"));
-    $("#movie-area").append(posterCard);
-    $("#movie-area").append($("<div>").addClass("col-1"));
+    var posterRow = $("<div>");
+    posterRow.addClass("row mt-1 p-2");
+    posterRow.append($("<div>").addClass("col-1"));
+    posterRow.append(posterCard);
+    posterRow.append($("<div>").addClass("col-1"));
+
+    var blurbRow = $("<h4>");
+    blurbRow.addClass("row mt-3 text-center pr-4 pl-4 movie-blurb");
+    blurbRow.text("Other users that searched for " + currentTag + " liked this movie!");
+    $("#movie-area").append(blurbRow)
+    $("#movie-area").append(posterRow)
 }
 
 // if the user clicks the more images button, will find 12 new images to display and put them on the top of the pictures area
@@ -376,7 +397,7 @@ $(document).on("click", ".search-tag", function(event){
         method: "GET"
         }).then(function(response){
             var movArr = response.Search;
-            var curMovie = response.Search[randInt(response.Search.length)];  
+            var curMovie = response.Search[Math.floor(Math.random() * (response.Search.length))];  
             movieParams = $.param({
             apikey : movieKey,
             i : curMovie.imdbID,
@@ -386,7 +407,9 @@ $(document).on("click", ".search-tag", function(event){
                     url: "http://www.omdbapi.com/?" + movieParams,
                     method: "GET"
                 }).then(function(response){
-                    displayMovie(response);
+                    // store the movie poster to be displayed
+                    homeMovie = response;
+                    displayMovie();
                 })
             } else {
                 $("#movie-area").empty();

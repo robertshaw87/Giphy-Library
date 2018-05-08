@@ -9,16 +9,33 @@ nav {
     background-color: rgba(9,18,16,1);
 }
 
+h1 {
+    font-family: 'Khula', sans-serif;
+    font-size: 70px;
+}
+
 .nav {
     position: absolute !important;
     right: 20px !important;   
     bottom: 0 !important;
+    font-family: 'Khula', sans-serif;
+}
+
+/* banner font for the gifs area */
+#banner-area {
+    font-family: 'Rock Salt', cursive;
 }
 
 /* makes all the buttons pop out */
 .btn {
     border-style: outset;
     border-width: 5px;
+    font-family: 'Indie Flower', cursive;
+    font-weight: bold;
+}
+
+input {
+    font-family: 'Indie Flower', cursive;
 }
 
 /* depresses buttons on hover */
@@ -31,6 +48,7 @@ nav {
     position: relative;
 }
 
+/* the card wrapper for the gifs */
 .imgCard {
     height: 100%;
     border-radius: 50%;
@@ -45,6 +63,7 @@ nav {
     visibility: hidden;
     border-radius: 10px;
     height: 100%; 
+    font-family: 'Finger Paint', cursive;
     background-color: rgba(0,0,0,0.7);
 }
 
@@ -55,15 +74,49 @@ nav {
 
 /* show the overlay upon hover */
 .imgCard:hover .infoCard {
-    visibility: initial;
+    visibility: visible;
 }
 
+/* font size for the gif title */
+.infoCard .card-title {
+    font-size: 35px;
+}
+
+/* font size for the rating in the gif */
+.infoCard .card-text {
+    font-size: 20px;
+}
+
+/* introduction text for the movie poster */
+.movie-blurb {
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+}
+
+/* movie title and plot overlay */
 .movie-info {
     visibility: hidden;
     background-color: rgba(0,0,0,0.7);
     overflow-y: scroll;
+    font-family: 'Gloria Hallelujah', cursive;
+}
+
+/* increase font size for the movie title */
+.movie-info h6 {
+    font-size: 28px
 }
 
 .movie-card:hover .movie-info, .movie-info:hover {
-    visibility: initial;
+    visibility: visible;
 }
+
+/* hide the movie poster on smaller resolutions */
+@media (min-width: 0px) {
+    #movie-area {
+        display: none;
+}}
+
+@media (min-width: 768px) {
+    #movie-area {
+        display: block;
+}}
