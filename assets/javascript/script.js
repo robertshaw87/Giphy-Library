@@ -366,6 +366,7 @@ $(document).on("click", ".search-tag", function(event){
     // set the active nav tab to home
     $(".navHome").addClass("active");
     $(".navFav").removeClass("active");
+    $("#movie-area").empty();
     // display the more images button below the add category input area
     // this is so we effectively move to the images tab if the user was in favorites
     displayHomeUtilityButton();
