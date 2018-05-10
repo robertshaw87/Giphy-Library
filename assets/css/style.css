@@ -66,27 +66,32 @@ input {
     position: relative;
 }
 
+
+
 /* the card wrapper for the gifs */
 .imgCard {
     height: 100%;
     border-radius: 50%;
     border-width: 10px;
     border-style: solid;
-    animation-name: slide;
-    animation-duration: .5s;
+    animation-name: shrink;
+    animation-duration: .4s;
     animation-iteration-count: 1;
 }
 
-@keyframes slide {
+@keyframes shrink {
     0%{
-        transform: rotate(0deg);
-    }
-    50% {
-        transform: rotate(180deg);
+        border-radius: 10px;
     }
     100% {
-        transform: rotate(360deg);
+        border-radius: 50%;
     }
+}
+
+.imgCard-play {
+    animation-name: pulse;
+    animation-duration: .6s;
+    animation-iteration-count: 1;
 }
 
 .imgCard-img {

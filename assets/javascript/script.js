@@ -437,6 +437,7 @@ $(document).on("click", ".imgCard", function(event){
         // make the iamge and the wrapper card rectangular while playing
         image.attr("style", "border-radius: 10px");
         $(this).attr("style", "border-radius: 10px");
+        $(this).addClass("imgCard-play");
         
     // if the image was already animated, we "pause" the gif
     } else if (state) {
@@ -447,6 +448,7 @@ $(document).on("click", ".imgCard", function(event){
         // make the image and the wrapper card circular
         image.attr("style", "border-radius: 100%");
         $(this).attr("style", "border-radius: 100%");
+        $(this).removeClass("imgCard-play")
     }
 })
 
