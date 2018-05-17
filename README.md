@@ -36,6 +36,10 @@ No installation needed! Just open the page in your preferred browser.
 
 * [OMDB API](http://www.omdbapi.com/) - Movie suggestions
 
+## Challenges
+
+I wasn't able to completely nail down the styling of this app. I ended up focusing very hard on adding additional functionality such as a favorites section that persisted across visits, a one touch download button, and maintaining browsing continuity when switching between Home and Favorites. If only the gifs were the same aspect ratio, everything would look so much nicer! I did end up making a cool animation with the round border growing into the rectangular one though, so definitely still a gain in terms of more practice with styling.
+
 ## Authors
 
 * **Robert Shaw** - *Initial work* - [robertshaw87](https://github.com/robertshaw87)
